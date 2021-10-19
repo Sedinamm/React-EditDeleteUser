@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import { v4 as uuid } from "uuid";
+import {connect} from 'react-redux'
+import { addContact } from './actions/contactActions';
 
 
 
@@ -20,7 +22,7 @@ function ContactsForm(props){
                     id: uuid(),
                 };
             
-            props.addContact(newcontact);
+            props.addNewContact(newcontact);
             
             setName("");
             setPhone("");
@@ -30,7 +32,8 @@ function ContactsForm(props){
         }
 
         return(
-            <form onSubmit={(e) => handleSubmit(e)} className="form">
+            <div className="form">
+            <form onSubmit={(e) => handleSubmit(e)} >
                 <label className="label">Name:</label>
                 <input 
                 name="name" 
@@ -44,8 +47,7 @@ function ContactsForm(props){
                 <label className="label">Phone:</label>
                 <input 
                 name="phone" 
-                type="tel" 
-                pattern='[0-9]{10}'
+                type="number" 
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)} 
                 className="input" 
@@ -62,10 +64,15 @@ function ContactsForm(props){
                 className="input" 
                 />
             <br/>
-                <input name="submit" type="submit" />
+                <input name="submit" type="submit" id="subBtn"/>
 
             </form>
+            </div>
         );
 }
 
-export default ContactsForm;
+const mapDispatchToProps = {
+    addNewContact: addContact,
+};
+
+export default connect(null, mapDispatchToProps)  (ContactsForm);
